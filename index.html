@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LectoPlay</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #0f172a, #1e293b);
+        color: white;
+        padding-top: 60px;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      nav {
+        background-color: #2c3e50;
+        padding: 10px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav ul li a:hover {
+        background-color: #e74c3c;
+      }
+
+      section {
+        padding: 40px 20px;
+        margin-bottom: 30px;
+        scroll-margin-top: 80px; /* Compensa la altura del navbar fijo */
+      }
+
+      .center-box {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      section img {
+        display: block;
+        margin: 20px auto;
+        max-height: 100%;
+        max-height: 300px;
+        width: auto;
+        border-radius: 10px;
+        object-fit: cover;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      button,
+      .btn {
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover,
+      .btn:hover {
+        background-color: #34495e;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #f4f4f4;
+        color: #2c3e50;
+      }
+
+      .fondo-inicio {
+        background: linear-gradient(to right, #0f172a, #1e293b);
+      }
+
+      .fondo-anime {
+        background: linear-gradient(to right, #1e3a8a, #1e293b);
+      }
+
+      .fondo-manga {
+        background: linear-gradient(to right, #0f172a, #334155);
+      }
+
+      .fondo-cuenta {
+        background: linear-gradient(to right, #1e293b, #475569);
+      }
+
+      .fondo-comunidad {
+        background: linear-gradient(to right, #0f172a, #1e3a8a);
+      }
+
+      .fondo-galeria {
+        background: linear-gradient(to right, #1e293b, #0f172a);
+      }
+
+      /* Estilos del calendario */
+      .nav-buttons {
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .nav-buttons button {
+        margin: 5px;
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+        background-color: #2563eb;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+
+      .nav-buttons button:hover {
+        background-color: #3b82f6;
+      }
+
+      .month-label {
+        text-align: center;
+        margin: 10px;
+        font-size: 1.1rem;
+        color: #60a5fa;
+      }
+
+      .calendars {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .calendars {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .calendar {
+          width: 100%;
+          max-width: 350px;
+        }
+      }
+
+      .calendar {
+        background-color: #1e293b;
+        border-radius: 20px;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+        padding: 20px;
+        width: 340px;
+      }
+
+      .calendar h2 {
+        text-align: center;
+        color: #60a5fa;
+        margin-bottom: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 8px;
+      }
+
+      th {
+        color: #94a3b8;
+        font-weight: normal;
+        padding-bottom: 6px;
+      }
+
+      td {
+        background-color: #334155;
+        border-radius: 10px;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-weight: bold;
+        font-size: 1rem;
+      }
+
+      td:hover {
+        background-color: #475569;
+      }
+
+      .empty {
+        background-color: transparent;
+        cursor: default;
+      }
+
+      .event-day {
+        background-color: #2563eb !important;
+        color: white;
+      }
+
+      .today {
+        outline: 2px solid #38bdf8;
+        box-shadow: 0 0 10px #38bdf8aa;
+      }
+
+      .event-info {
+        margin-top: 15px;
+        background-color: #0f172a;
+        padding: 15px;
+        border-radius: 10px;
+        min-height: 60px;
+        color: #f8fafc;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .event-info:hover {
+        background-color: #1e3a8a;
+      }
+
+      .event-info.inactive {
+        background-color: #0f172a;
+        color: #64748b;
+        cursor: default;
+      }
+
+      .descriptions {
+        max-width: 800px;
+        margin: 60px auto 40px auto;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: #1e293b;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+        text-align: center;
+      }
+
+      .descriptions img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .descriptions h3 {
+        color: #38bdf8;
+        margin-bottom: 10px;
+      }
+
+      .descriptions p {
+        color: #cbd5e1;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: justify;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>LectoPlay</h1></header>
+    <nav>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#anime">Anime</a></li>
+        <li><a href="#manga">Manga</a></li>
+        <li><a href="#cuenta">Mi Cuenta</a></li>
+        <li><a href="#comunidad">Comunidad</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#calendario">Calendario</a></li>
+      </ul>
+    </nav>
+    <section>
+      <main class="container">
+        <section id="inicio" class="fondo-inicio">
+          <div class="center-box">
+            <h2>Bienvenido a LectoPlay</h2>
+            <p>
+              En LectoPlay te sumergirás en un universo donde el anime y el
+              manga japoneses cobran vida en cada página y pantalla. Disfruta de
+              una selección pensada para jóvenes y adultos que buscan emoción,
+              calidad y conexión con la cultura nipona.
+            </p>
+            <ul style="text-align: left; display: inline-block">
+              <li>Streaming de anime con reseñas y estrenos.</li>
+              <li>Biblioteca digital de manga con tomos destacados.</li>
+              <li>Conexión con fans y comunidad activa.</li>
+            </ul>
+            <img
+              src="https://wallpaperaccess.com/full/7825045.jpg"
+              alt="Wallpaper anime principal"
+              loading="lazy"
+            />
+
+            <div
+              id="quote-box"
+              style="
+                position: relative;
+                border-radius: 10px;
+                padding: 30px;
+                text-align: center;
+                max-width: 700px;
+                margin: 20px auto;
+                background-size: cover;
+                background-position: center;
+                color: #fff;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                transition: background-image 0.5s ease;
+              "
+            >
+              <blockquote
+                id="quote"
+                style="
+                  font-size: 1.4rem;
+                  font-style: italic;
+                  margin-bottom: 15px;
+                "
+              >
+                Cargando cita...
+              </blockquote>
+              <p id="author" style="font-weight: bold; margin-bottom: 20px"></p>
+              <button onclick="nuevaCita()">Nueva Cita</button>
+            </div>
+
+            <img
+              src="https://i.blogs.es/10a197/captura-de-pantalla-2021-11-01-a-las-11.30.23/1366_2000.jpg"
+              alt="Manga diseño"
+              loading="lazy"
+            />
+            <a href="#anime" class="btn">Explora Anime</a>
+          </div>
+        </section>
+
+        <section id="anime" class="fondo-anime">
+          <div class="center-box">
+            <h2>Anime</h2>
+            <p>
+              Explora recomendaciones, estrenos y análisis del anime japonés más
+              popular y emergente.
+            </p>
+          </div>
+        </section>
+
+        <section id="manga" class="fondo-manga">
+          <div class="center-box">
+            <h2>Manga</h2>
+            <p>
+              Descubre reseñas de manga, desde clásicos venerados hasta nuevas
+              joyas del cómic japonés.
+            </p>
+          </div>
+        </section>
+
+        <section id="cuenta" class="fondo-cuenta">
+          <div class="center-box">
+            <h2>Mi Cuenta</h2>
+            <p>
+              Accede a tus listas personalizadas y gestiona tus preferencias de
+              anime y manga.
+            </p>
+          </div>
+        </section>
+
+        <section id="comunidad" class="fondo-comunidad">
+          <div class="center-box">
+            <h2>Comunidad</h2>
+            <p>
+              Únete a la comunidad de fans, comparte tus opiniones y
+              recomendaciones favoritas.
+            </p>
+          </div>
+        </section>
+
+        <section id="galeria" class="fondo-galeria">
+          <div class="center-box">
+            <h2>Galería de la Comunidad</h2>
+            <div
+              id="galeria-drop"
+              style="
+                border: 2px dashed #2c3e50;
+                padding: 40px;
+                text-align: center;
+                border-radius: 10px;
+                background-color: #ecf0f1;
+                color: #2c3e50;
+                margin-bottom: 20px;
+              "
+            >
+              Arrastra tus imágenes aquí o haz clic para subir
+            </div>
+            <div
+              id="galeria-contenido"
+              style="
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+              "
+            ></div>
+          </div>
+        </section>
+      </main>
+
+      <div class="center-box" id="calendario">
+        <h2>Calendario de Nuevos Episodios y Lecturas</h2>
+        <div class="nav-buttons">
+          <button onclick="changeMonth(-1)">← Mes anterior</button>
+          <span class="month-label" id="monthLabel"></span>
+          <button onclick="changeMonth(1)">Mes siguiente →</button>
+        </div>
+        <div class="calendars">
+          <div class="calendar">
+            <h2>Anime</h2>
+            <table id="animeCalendar"></table>
+            <div id="animeEventBox" class="event-info inactive">
+              Selecciona un día con estreno.
+            </div>
+          </div>
+          <div class="calendar">
+            <h2>Manga</h2>
+            <table id="mangaCalendar"></table>
+            <div id="mangaEventBox" class="event-info inactive">
+              Selecciona un día con lectura.
+            </div>
+          </div>
+        </div>
+        <div id="descriptions" class="descriptions">
+          <img
+            id="desc-img"
+            src=""
+            alt="Imagen del evento"
+            style="display: none"
+          />
+          <h3 id="desc-title">Descripción del Evento</h3>
+          <p id="desc-text">Aquí aparecerá...</p>
+        </div>
+      </div>
+    </section>
+    <script>
+      const animeEvents = {
+        "2025-06-18": "One Piece episodio 1107",
+        "2025-06-21": "Estreno de temporada: Jujutsu Kaisen S3",
+        "2025-06-25": "Kimetsu no Yaiba episodio 7",
+        "2025-06-30": "Anime Awards 2025",
+      };
+
+      const mangaEvents = {
+        "2025-06-19": "Chainsaw Man capítulo 156",
+        "2025-06-22": "My Hero Academia capítulo 425",
+        "2025-06-28": "One Piece capítulo 1120",
+      };
+
+      const eventDescriptions = {
+        "One Piece episodio 1107": {
+          text: "Luffy y su tripulación llegan a Egghead Island, enfrentando a un misterioso enemigo mientras Bonney revive recuerdos de su padre Kuma. Revelaciones y tensión al máximo.",
+          img: "https://opwiki.org/images/Egghead_Arc.jpg",
+        },
+        "Estreno de temporada: Jujutsu Kaisen S3": {
+          text: "La tercera temporada comienza con la invasión de Shibuya. Gojo es sellado, la oscuridad domina, y los personajes enfrentan su destino en un arco impactante y trágico.",
+          img: "https://th.bing.com/th/id/OIP.w7GnjZD421StkX1H4Z8_EQHaKd?r=0&rs=1&pid=ImgDetMain",
+        },
+        "Kimetsu no Yaiba episodio 7": {
+          text: "Tanjiro y Genya luchan con todo contra una de las lunas superiores. La batalla revela poderes ocultos y un momento de sacrificio que dejará huella en los fans.",
+          img: "https://cinepremiere.com.mx/wp-content/uploads/2024/06/demon-slayer-castillo-infinito-poster-900x1274.jpg",
+        },
+        "Anime Awards 2025": {
+          text: "La ceremonia anual premió a Solo Leveling como Anime del Año, y destacó animaciones y actuaciones sobresalientes. Fue un evento lleno de emoción y sorpresas.",
+          img: "https://www.nerdpool.it/wp-content/uploads/2023/03/crunchyroll-awards.jpg",
+        },
+        "Chainsaw Man capítulo 156": {
+          text: "Denji se enfrenta a un nuevo híbrido, mientras Asa y Yoru hacen una revelación que cambiará la dinámica del grupo. Oscuridad, acción y emociones mezcladas.",
+          img: "https://th.bing.com/th/id/R.8852b944dfe46bd2148e1858564f9d54?rik=XvgNzkUXOqmgHA&pid=ImgRaw&r=0",
+        },
+        "My Hero Academia capítulo 425": {
+          text: "Después de la guerra, Deku y sus compañeros reflexionan sobre el futuro. Una figura del pasado regresa, y nuevos desafíos surgen para la clase 1-A.",
+          img: "https://nami.news/wordpress/wp-content/uploads/2024/11/Boku-no-Hero-Academia-Manga-Cover-Volume-42.jpeg",
+        },
+        "One Piece capítulo 1120": {
+          text: "Una nueva pista sobre el Siglo Vacío y Joy Boy es revelada por Vegapunk. La historia del mundo se reescribe y el destino de Luffy toma un nuevo rumbo.",
+          img: "https://blog-imgs-172.fc2.com/o/n/e/onepiecelog2nd/12240.jpg",
+        },
+      };
+
+      let currentMonth = new Date().getMonth();
+      let currentYear = new Date().getFullYear();
+
+      function createCalendar(containerId, eventObj, outputBoxId) {
+        const today = new Date();
+        const isCurrentMonth =
+          today.getMonth() === currentMonth &&
+          today.getFullYear() === currentYear;
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        let tableHTML = "<tr>";
+        ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"].forEach(
+          (d) => (tableHTML += `<th>${d}</th>`)
+        );
+        tableHTML += "</tr><tr>";
+
+        let cellCount = 0;
+        for (let i = 0; i < firstDay; i++) {
+          tableHTML += '<td class="empty"></td>';
+          cellCount++;
+        }
+
+        for (let day = 1; day <= lastDate; day++) {
+          const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(
+            2,
+            "0"
+          )}-${String(day).padStart(2, "0")}`;
+          const isToday = isCurrentMonth && today.getDate() === day;
+          const isEvent = eventObj[dateStr];
+          let classList = [];
+          if (isToday) classList.push("today");
+          if (isEvent) classList.push("event-day");
+          tableHTML += `<td class="${classList.join(
+            " "
+          )}" onclick="showEvent('${dateStr}', '${outputBoxId}', '${
+            isEvent || ""
+          }')">${day}</td>`;
+          cellCount++;
+          if (cellCount % 7 === 0) tableHTML += "</tr><tr>";
+        }
+
+        while (cellCount % 7 !== 0) {
+          tableHTML += '<td class="empty"></td>';
+          cellCount++;
+        }
+
+        tableHTML += "</tr>";
+        document.getElementById(containerId).innerHTML = tableHTML;
+      }
+
+      function showEvent(dateStr, outputBoxId, eventName) {
+        const box = document.getElementById(outputBoxId);
+        if (!eventName) {
+          box.classList.add("inactive");
+          box.textContent = "No hay evento en esta fecha.";
+          box.onclick = null;
+          return;
+        }
+        box.classList.remove("inactive");
+        box.textContent = `🗓 ${eventName}`;
+        box.onclick = () => {
+          const desc = eventDescriptions[eventName];
+          const imgEl = document.getElementById("desc-img");
+          document.getElementById("desc-title").textContent = eventName;
+          document.getElementById("desc-text").textContent =
+            desc?.text || "Descripción no disponible.";
+          if (desc?.img) {
+            imgEl.src = desc.img;
+            imgEl.style.display = "block";
+          } else {
+            imgEl.style.display = "none";
+          }
+          document
+            .getElementById("descriptions")
+            .scrollIntoView({ behavior: "smooth" });
+        };
+      }
+
+      function changeMonth(offset) {
+        currentMonth += offset;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        } else if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        updateCalendars();
+      }
+
+      function updateCalendars() {
+        const months = [
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre",
+        ];
+        document.getElementById(
+          "monthLabel"
+        ).textContent = `${months[currentMonth]} ${currentYear}`;
+        createCalendar("animeCalendar", animeEvents, "animeEventBox");
+        createCalendar("mangaCalendar", mangaEvents, "mangaEventBox");
+      }
+
+      // Ejecutar al cargar
+      const fondos = {
+        onepiece:
+          'url("https://th.bing.com/th/id/OIP.hRfHwQli4gAkNBh8qi2oVAHaHa")',
+        naruto:
+          'url("https://static.vecteezy.com/system/resources/thumbnails/021/789/398/small/abstract-seamless-red-cloud-pattern-on-black-background-great-for-print-fashion-clothing-fabric-pillow-bed-sheet-design-and-more-vector.jpg")',
+      };
+
+      const citas = [
+        {
+          texto:
+            "No importa cómo te golpeen. Lo importante es cómo te levantas.",
+          autor: "Monkey D. Luffy",
+          origen: "onepiece",
+        },
+        {
+          texto: "Un hombre morirá, pero su sueño vivirá para siempre.",
+          autor: "Marshall D. Teach",
+          origen: "onepiece",
+        },
+        {
+          texto: "La fuerza no determina la victoria. La estrategia lo hace.",
+          autor: "Trafalgar D. Water Law",
+          origen: "onepiece",
+        },
+        {
+          texto: "No necesito un ejército, tengo a mis amigos.",
+          autor: "Portgas D. Ace",
+          origen: "onepiece",
+        },
+        {
+          texto: "El poder sin propósito no es más que destrucción.",
+          autor: "Nico Robin",
+          origen: "onepiece",
+        },
+        {
+          texto: "No rendirse es mi camino ninja.",
+          autor: "Naruto Uzumaki",
+          origen: "naruto",
+        },
+        {
+          texto:
+            "Los que rompen las reglas son escoria, pero los que abandonan a sus amigos son peor que eso.",
+          autor: "Kakashi Hatake",
+          origen: "naruto",
+        },
+        {
+          texto: "El fracaso existe para que podamos aprender.",
+          autor: "Jiraiya",
+          origen: "naruto",
+        },
+        {
+          texto: "El dolor es la forma más pura de crecimiento.",
+          autor: "Nagato (Pain)",
+          origen: "naruto",
+        },
+        {
+          texto: "No importa cuánto llueva, algún día saldrá el sol.",
+          autor: "Itachi Uchiha",
+          origen: "naruto",
+        },
+      ];
+
+      function nuevaCita() {
+        const cita = citas[Math.floor(Math.random() * citas.length)];
+        document.getElementById("quote").textContent = cita.texto;
+        document.getElementById("author").textContent = `– ${cita.autor}`;
+        document.getElementById("quote-box").style.backgroundImage =
+          fondos[cita.origen];
+      }
+
+      // Inicializar la primera cita
+      window.onload = () => {
+        nuevaCita();
+
+        const dropZone = document.getElementById("galeria-drop");
+        const gallery = document.getElementById("galeria-contenido");
+
+        dropZone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dropZone.style.backgroundColor = "#dfe6e9";
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+          dropZone.style.backgroundColor = "#ecf0f1";
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropZone.style.backgroundColor = "#ecf0f1";
+          const files = e.dataTransfer.files;
+          Array.from(files).forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              const img = document.createElement("img");
+              img.src = event.target.result;
+              img.style.height = "150px";
+              img.style.borderRadius = "8px";
+              img.style.objectFit = "cover";
+              gallery.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+          });
+        });
+
+        dropZone.addEventListener("click", () => {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.accept = "image/*";
+          input.multiple = true;
+          input.addEventListener("change", () => {
+            Array.from(input.files).forEach((file) => {
+              const reader = new FileReader();
+              reader.onload = function (event) {
+                const img = document.createElement("img");
+                img.src = event.target.result;
+                img.style.height = "150px";
+                img.style.borderRadius = "8px";
+                img.style.objectFit = "cover";
+                gallery.appendChild(img);
+              };
+              reader.readAsDataURL(file);
+            });
+          });
+          input.click();
+        });
+      };
+
+      updateCalendars();
+    </script>
+    <footer>
+      <p>Contenido de LectoPlay © 2025 LectoPlay</p>
+    </footer>
+  </body>
+</html>
